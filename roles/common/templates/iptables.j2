@@ -1,0 +1,135 @@
+## {{ ansible_managed }}
+###
+## Iptables Ruleset for Stage ENV & DEV 
+## FG - 9.26.2013 - fgravto@summitpronets.com
+## 2.12.2014 - Updated Things into CHains for Whitelist Management
+##  
+##
+
+*filter 
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:SSH - [0:0]
+:SPN-ALLOWED  - [0:0]
+:SPN-EXTERNAL - [0:0]
+:SPN-INTERNAL - [0:0]
+:AWS-EXTERNAL - [0:0]
+:AWS-INTERNAL - [0:0]
+:SNMP - [0:0]
+:SSL - [0:0]
+:MONGO - [0:0]
+:HTTP - [0:0]
+:MEMCACHE - [0:0]
+:ELASTIC - [0:0]
+
+-A INPUT -i lo -j ACCEPT -m comment --comment "Allow Loopback"
+-A INPUT -p tcp -m tcp --dport 22 -j SSH -m comment --comment "SSH"
+-A INPUT -p tcp -m tcp --dport 27017 -j MONGO -m comment --comment "MONGO"
+-A INPUT -p tcp -m tcp --dport 9200  -j ELASTIC -m comment --comment "ELASTIC"
+-A INPUT -p tcp -m tcp --dport 443   -j SSL -m comment --comment "SSL"
+-A INPUT -p tcp -m tcp --dport 80    -j HTTP -m comment --comment "HTTP"
+-A INPUT -p tcp -m tcp --dport 11211 -j MEMCACHE -m comment --comment "MEMCACHE"
+-A INPUT -p udp -m udp --dport 161 -j SNMP -m comment --comment "SNMP"
+
+#-------BEGIN AWS-INTERNAL RANGES------------
+-A AWS-INTERNAL -s 10.100.206.132 -j ACCEPT
+-A AWS-INTERNAL -s 10.196.74.80 -j ACCEPT
+-A AWS-INTERNAL -s 10.83.105.226 -j ACCEPT
+-A AWS-INTERNAL -s 10.242.217.219 -j ACCEPT
+-A AWS-INTERNAL -s 10.212.115.85 -j ACCEPT
+-A AWS-INTERNAL -s 10.116.173.52 -j ACCEPT
+-A AWS-INTERNAL -s 10.142.133.75 -j ACCEPT
+-A AWS-INTERNAL -s 10.236.135.174 -j ACCEPT
+-A AWS-INTERNAL -s 10.76.197.225 -j ACCEPT
+-A AWS-INTERNAL -s 10.242.205.252 -j ACCEPT
+-A AWS-INTERNAL -s 10.12.34.103 -j ACCEPT
+-A AWS-INTERNAL -s 10.46.227.35 -j ACCEPT
+-A AWS-INTERNAL -s 10.31.131.145 -j ACCEPT
+-A AWS-INTERNAL -s 10.159.36.33 -j ACCEPT
+-A AWS-INTERNAL -s 10.158.21.116 -j ACCEPT
+-A AWS-INTERNAL -s 10.117.17.135 -j ACCEPT
+-A AWS-INTERNAL -s 10.147.174.251 -j ACCEPT
+-A AWS-INTERNAL -s 10.29.185.183 -j ACCEPT
+-A AWS-INTERNAL -s 10.191.19.29 -j ACCEPT
+-A AWS-INTERNAL -s 10.180.217.77 -j ACCEPT
+-A AWS-INTERNAL -s 10.232.34.214 -j ACCEPT
+-A AWS-INTERNAL -s {{ ansible_eth0.ipv4.address }} -j ACCEPT
+#-----END AWS-INTERNAL RANGES-------------
+#----BEGIN AWS-EXTERNAL RANGES------------
+-A AWS-EXTERNAL -s 54.225.64.192 -j ACCEPT
+-A AWS-EXTERNAL -s 54.221.223.231 -j ACCEPT
+-A AWS-EXTERNAL -s 184.73.161.103 -j ACCEPT
+-A AWS-EXTERNAL -s 50.17.190.221 -j ACCEPT
+-A AWS-EXTERNAL -s 50.17.88.128 -j ACCEPT
+-A AWS-EXTERNAL -s 75.101.165.200 -j ACCEPT
+-A AWS-EXTERNAL -s 54.235.30.150 -j ACCEPT
+-A AWS-EXTERNAL -s 54.225.103.202 -j ACCEPT
+-A AWS-EXTERNAL -s 50.16.242.235 -j ACCEPT
+-A AWS-EXTERNAL -s 50.19.80.220 -j ACCEPT
+-A AWS-EXTERNAL -s 23.21.220.212 -j ACCEPT
+-A AWS-EXTERNAL -s 107.22.192.158 -j ACCEPT
+-A AWS-EXTERNAL -s 107.21.234.193 -j ACCEPT
+-A AWS-EXTERNAL -s 184.73.162.106 -j ACCEPT
+-A AWS-EXTERNAL -s 184.73.96.60 -j ACCEPT
+-A AWS-EXTERNAL -s 54.242.53.41 -j ACCEPT
+-A AWS-EXTERNAL -s 107.20.58.255 -j ACCEPT
+-A AWS-EXTERNAL -s 54.242.157.1 -j ACCEPT
+-A AWS-EXTERNAL -s 23.21.220.98 -j ACCEPT
+-A AWS-EXTERNAL -s 23.21.220.202 -j ACCEPT
+-A AWS-EXTERNAL -s 23.21.220.204 -j ACCEPT
+-A AWS-EXTERNAL -s 184.73.165.39 -j ACCEPT
+-A AWS-EXTERNAL -s 184.73.161.111 -j ACCEPT
+#-----END AWS-EXTERNAL RANGES-------------
+#---BEGIN SPN-EXTERNAL RANGES--------------
+-A SPN-EXTERNAL -s 69.61.137.128/26 -j ACCEPT -m comment --comment "CBTS-1"
+-A SPN-EXTERNAL -s 66.117.251.0/24  -j ACCEPT -m comment --comment "CBTS-2"
+-A SPN-EXTERNAL -s 66.117.230.64/26 -j ACCEPT -m comment --comment "CBTS-3"
+-A SPN-EXTERNAL -s 198.199.120.64/32 -j ACCEPT -m comment --comment "DIOCEAN1"
+-A SPN-EXTERNAL -s 198.199.69.136/32 -j ACCEPT -m comment --comment "DIOCEAN2"
+#---END SPN-EXTERNAL RANGES--------------
+#-- BEGIN SPN-ALLOWED RANGES-------------
+-A SPN-ALLOWED -s 50.74.11.88/29  -j  ACCEPT -m comment --comment "NYC1-HQ"
+-A SPN-ALLOWED -s 64.61.82.160/29 -j  ACCEPT -m comment --comment "NYC1-BHQ"
+-A SPN-ALLOWED -s 69.61.225.96/27 -j  ACCEPT -m comment --comment "SBM-GLOBALVPN"
+-A SPN-ALLOWED -s 69.118.241.217/32 -j ACCEPT -m comment --comment "SBM-FGRAVATO"
+-A SPN-ALLOWED -s 66.229.183.170/32 -j ACCEPT -m comment --comment "SBM-KLEE"
+-A SPN-ALLOWED -s 24.168.78.58/32  -j ACCEPT -m comment --comment "SBM-RSEND"
+-A SPN-ALLOWED -s 96.248.46.70/32 -j  ACCEPT -m comment --comment "SBM-RSEND"
+-A SPN-ALLOWED -s 208.120.81.80/32 -j ACCEPT -m comment --comment "SBM-EMPLOYEE"
+-A SPN-ALLOWED -s 121.243.79.150/32 -j ACCEPT -m comment --comment "SBM-INDUSA"
+#-- END SPN-ALLOWED RANGES-------------
+
+-A SSH -j SPN-ALLOWED
+-A SSH -j SPN-EXTERNAL
+-A SSH -j AWS-EXTERNAL
+-A SSH -j AWS-INTERNAL
+-A SSH -j REJECT --reject-with icmp-port-unreachable
+
+-A MONGO -j SPN-ALLOWED
+-A MONGO -j SPN-EXTERNAL
+-A MONGO -j AWS-EXTERNAL
+-A MONGO -j AWS-INTERNAL
+-A MONGO -j REJECT --reject-with icmp-port-unreachable
+
+-A ELASTIC -j SPN-ALLOWED
+-A ELASTIC -j SPN-EXTERNAL
+-A ELASTIC -j AWS-EXTERNAL
+-A ELASTIC -j AWS-INTERNAL
+-A ELASTIC -j REJECT --reject-with icmp-port-unreachable
+
+
+-A MEMCACHE -j SPN-ALLOWED
+-A MEMCACHE -j SPN-EXTERNAL
+-A MEMCACHE -j AWS-EXTERNAL
+-A MEMCACHE -j AWS-INTERNAL
+-A MEMCACHE -j REJECT --reject-with icmp-port-unreachable
+
+
+-A SNMP -j SPN-ALLOWED
+-A SNMP -j SPN-EXTERNAL
+-A SNMP -j AWS-EXTERNAL
+-A SNMP -j AWS-INTERNAL
+-A SNMP -j REJECT --reject-with icmp-port-unreachable
+
+COMMIT

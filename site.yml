@@ -1,0 +1,14 @@
+---
+- name: Install Common Elastic and Logstash
+  hosts: logstash
+  user: root
+  # remote_user: user
+  # sudo: yes
+
+  roles:
+    - common
+    - nginx
+    - java
+    - elasticsearch
+    - kibana
+    - logstash

@@ -1,0 +1,21 @@
+---
+
+
+
+- name: Create the repository for ElasticSearch
+  copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+
+- name: Create the GPG key for EPEL
+  copy: src=GPG-KEY-elasticsearch dest=/etc/pki/rpm-gpg
+
+- name: Install Elastic Search
+  yum: name="elasticsearch-1.1.1" state=present
+
+- name: Copy ElasticSearch Config 
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+
+- name: Start the ElasticSearch
+  service: name=elasticsearch state=started enabled=true
+
+
+

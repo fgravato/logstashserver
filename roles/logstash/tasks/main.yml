@@ -1,0 +1,21 @@
+---
+
+- name: Create the repository for Logstash
+  copy: src=logstash.repo dest=/etc/yum.repos.d/logstash.repo
+
+- name: Install Logstash from repository
+  yum: name={{ item }} state=latest
+  with_items:
+   - logstash
+   - logstash-contrib
+
+- name: Copy Configs 01-lumberjack-input
+  copy: src=01-lumberjack-input.conf   dest=/etc/logstash/conf.d/01-lumberjack-input.conf
+
+- name: Copy Configs 10-syslog.conf
+  copy: src=10-syslog.conf dest=/etc/logstash/conf.d/10-syslog.conf
+
+
+
+- name: Start the Logstash
+  service: name=logstash state=started enabled=true

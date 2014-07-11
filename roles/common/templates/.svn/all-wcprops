@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/sbm/!svn/ver/25340/it/ansible-playbooks/sbmcloudstack/roles/common/templates
+END
+ntp.conf.j2
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/sbm/!svn/ver/25324/it/ansible-playbooks/sbmcloudstack/roles/common/templates/ntp.conf.j2
+END
+iptables.j2
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/sbm/!svn/ver/25340/it/ansible-playbooks/sbmcloudstack/roles/common/templates/iptables.j2
+END
