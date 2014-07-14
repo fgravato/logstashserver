@@ -1,0 +1,21 @@
+---
+
+- name: Install system packages (yum version)
+  yum: pkg={{ item }} state=latest
+  with_items:
+    - git
+    - less
+    - perl
+    - python
+    - python-pip
+    - sudo
+    - unzip
+    - xfsprogs
+    - zip
+
+
+- name: Install boto Python library
+  pip: name=boto state=latest
+
+- name: Install AWS CLI
+  pip: name=awscli state=latest
