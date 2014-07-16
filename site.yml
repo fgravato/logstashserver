@@ -13,3 +13,14 @@
     - elasticsearch
     - kibana
     - logstash
+
+
+- name: Install elasticsearch
+  hosts: dev1
+  user: root
+  # remote_user: user
+  # sudo: yes
+
+  roles:
+    - java
+    - elasticsearch
