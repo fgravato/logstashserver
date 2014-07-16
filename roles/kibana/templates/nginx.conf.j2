@@ -18,7 +18,7 @@ server {
   # Catchall for everything else
   location / {
     auth_basic "Restricted";
-    auth_basic_user_file /var/www/htpasswd;
+    auth_basic_user_file /var/www/.htpasswd;
     root /var/www/kibana;
     index index.html;
     expires 1d;
@@ -40,7 +40,7 @@ server {
     }
 
     auth_basic "Restricted";
-    auth_basic_user_file /var/www/htpasswd;
+    auth_basic_user_file /var/www/.htpasswd;
 
     proxy_pass http://localhost:9200;
     
@@ -82,7 +82,7 @@ server {
     add_header Access-Control-Allow-Credentials true;
 
     auth_basic "Restricted";
-    auth_basic_user_file /var/www/htpasswd;
+    auth_basic_user_file /var/www/.htpasswd;
 
   }
 
@@ -91,7 +91,7 @@ server {
     proxy_pass http://localhost:9200;
 
     auth_basic "Restricted";
-    auth_basic_user_file /var/www/htpasswd;
+    auth_basic_user_file /var/www/.htpasswd;
 
     proxy_redirect off;
 

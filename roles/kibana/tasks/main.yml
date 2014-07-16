@@ -27,7 +27,7 @@
   template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/kibana.conf mode=0755
 
 - name: Ensure kibana's htpasswd file is in place
-  copy: src=htpasswd dest=/var/www/htpasswd mode=0644 owner=root group=root
+  copy: src=.htpasswd dest=/var/www/.htpasswd mode=0644 owner=root group=root
 
 - name: Ensure default nginx site is not enabled
   file: state=absent path=/etc/nginx/conf.d/default.conf 
